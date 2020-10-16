@@ -1,0 +1,27 @@
+version: '3.7'
+volumes:
+    database_data:
+        driver: local
+
+services:
+    tinyurl:
+        env_file:
+            - .env
+        build:
+            context: .
+            dockerfile: Dockerfile
+        depends_on:
+            - db
+        ports: 
+            - 8090:8000
+        
+    db:
+        image: mysql:5.7.28
+        restart: always
+        environment:
+          MYSQL_ROOT_PASSWORD: sys
+          TZ: America/Toronto
+        volumes:
+            - database_data:/var/lib/mysql
+        ports:
+            - 6100:3306
